@@ -30,4 +30,7 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .text-black-important {
+    color: black !important;
+  }
 }
