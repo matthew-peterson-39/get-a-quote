@@ -16,7 +16,7 @@ const mockModels = {
 const mockYears = ["2020", "2019", "2018"];
 
 const mockServices = [
-  "Lockout - all types of vehicles lockout",
+  "Lockout ",
   "Trunk lockout",
   "Car key replacement",
   "Duplicate car keys",

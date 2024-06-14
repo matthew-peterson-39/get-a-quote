@@ -9,6 +9,7 @@ import CommercialServiceDetails from "./components/CommercialServiceDetails";
 import ZipCodeCheck from "./components/ZipCodeCheck";
 import ReviewAndSubmit from "./components/ReviewAndSubmit";
 import TimeSlotSelection from "./components/TimeSlotSelection";
+import PaymentFormWrapper from "./components/PaymentFormWrapper";
 
 const serviceableZipCodes = ["12345", "67890", "54321"]; // Example zip codes
 
@@ -86,10 +87,11 @@ export default function Home() {
             selectedDate={formData.selectedDate}
             handleSlotChange={handleChange}
             handleDateChange={handleDateChange}
-            handleSubmit={handleSubmitBooking}
+            handleSubmit={nextStep}
             prevStep={prevStep}
           />
         )}
+        {step === 7 && <PaymentFormWrapper formData={formData} handleSubmitBooking={handleSubmitBooking} prevStep={prevStep} />}
       </div>
     </main>
   );
