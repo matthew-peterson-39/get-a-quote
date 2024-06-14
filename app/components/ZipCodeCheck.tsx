@@ -1,24 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import AddressAutocomplete from "./AddressAutocomplete";
 
 type ZipCodeCheckProps = {
   formData: any;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleZipCodeCheck: () => void;
+  setFormData: (formData: any) => void; // Add this prop
 };
 
-const ZipCodeCheck: React.FC<ZipCodeCheckProps> = ({ formData, handleChange, handleZipCodeCheck }) => {
+const ZipCodeCheck: React.FC<ZipCodeCheckProps> = ({ formData, handleChange, handleZipCodeCheck, setFormData }) => {
+  const [address, setAddress] = useState(formData.serviceAddress || "");
+
+  const handleAddressSelect = (selectedAddress: string) => {
+    setAddress(selectedAddress);
+    setFormData({ ...formData, serviceAddress: selectedAddress });
+  };
+
   return (
     <div>
       <div className="mb-4">
-        <label className="block mb-2 text-sm font-medium text-gray-700">Enter your service location zip code</label>
-        <input
-          type="text"
-          name="zipCode"
-          value={formData.zipCode}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
-          placeholder="Zip Code"
-        />
+        <label className="block mb-2 text-sm font-medium text-gray-700">Enter your service address</label>
+        <AddressAutocomplete onAddressSelect={handleAddressSelect} />
       </div>
       <div className="flex justify-between">
         <button

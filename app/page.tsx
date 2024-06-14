@@ -1,29 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
-import ServiceSelection from "./components/ServiceSelection";
-import CustomerInfo from "./components/CustomerInfo";
-import AutomotiveServiceDetails from "./components/AutomotiveServiceDetails";
-import ResidentialServiceDetails from "./components/ResidentialServiceDetails";
-import CommercialServiceDetails from "./components/CommercialServiceDetails";
-import ZipCodeCheck from "./components/ZipCodeCheck";
-import ReviewAndSubmit from "./components/ReviewAndSubmit";
-import TimeSlotSelection from "./components/TimeSlotSelection";
-import PaymentFormWrapper from "./components/PaymentFormWrapper";
+import React, { useState } from 'react';
+import ServiceSelection from './components/ServiceSelection';
+import CustomerInfo from './components/CustomerInfo';
+import AutomotiveServiceDetails from './components/AutomotiveServiceDetails';
+import ResidentialServiceDetails from './components/ResidentialServiceDetails';
+import CommercialServiceDetails from './components/CommercialServiceDetails';
+import DistanceCheck from './components/DistanceCheck';
+import ReviewAndSubmit from './components/ReviewAndSubmit';
+import TimeSlotSelection from './components/TimeSlotSelection';
+import PaymentFormWrapper from './components/PaymentFormWrapper';
+import LoadGoogleMaps from './components/LoadGoogleMaps';
 
-const serviceableZipCodes = ["12345", "67890", "54321"]; // Example zip codes
-
-export default function Home() {
+const Home: React.FC = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    zipCode: "",
     service: "",
     name: "",
     email: "",
     phone: "",
     serviceDetails: "",
     selectedDate: null as Date | null,
-    timeSlot: ""
+    timeSlot: "",
+    serviceAddress: "",
+    serviceFee: 0
   });
 
   const nextStep = () => setStep(step + 1);
@@ -37,12 +37,9 @@ export default function Home() {
     setFormData({ ...formData, selectedDate: date });
   };
 
-  const handleZipCodeCheck = () => {
-    if (serviceableZipCodes.includes(formData.zipCode)) {
-      nextStep();
-    } else {
-      alert("Sorry, we do not service your area.");
-    }
+  const handleValidAddress = (address: string, serviceFee: number) => {
+    setFormData({ ...formData, serviceAddress: address, serviceFee });
+    nextStep();
   };
 
   const handleServiceSelect = (selectedService: string) => {
@@ -65,34 +62,38 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <div className="w-full max-w-md p-8 bg-white text-black rounded-lg shadow-md">
-        <h2 className="mb-6 text-2xl font-semibold text-center text-black">Get A Quote</h2>
-        {step === 1 && <ZipCodeCheck formData={formData} handleChange={handleChange} handleZipCodeCheck={handleZipCodeCheck} />}
-        {step === 2 && <ServiceSelection handleServiceSelect={handleServiceSelect} />}
-        {step === 3 && formData.service === "Automotive" && (
-          <AutomotiveServiceDetails formData={formData} handleChange={handleChange} handleSubmit={nextStep} prevStep={prevStep} />
-        )}
-        {step === 3 && formData.service === "Residential" && (
-          <ResidentialServiceDetails formData={formData} handleChange={handleChange} handleSubmit={nextStep} prevStep={prevStep} />
-        )}
-        {step === 3 && formData.service === "Commercial" && (
-          <CommercialServiceDetails formData={formData} handleChange={handleChange} handleSubmit={nextStep} prevStep={prevStep} />
-        )}
-        {step === 4 && <CustomerInfo formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />}
-        {step === 5 && <ReviewAndSubmit formData={formData} prevStep={prevStep} handleSaveQuote={handleSaveQuote} handleBookService={handleBookService} handleTimeSlot={nextStep} />}
-        {step === 6 && (
-          <TimeSlotSelection
-            selectedSlot={formData.timeSlot}
-            selectedDate={formData.selectedDate}
-            handleSlotChange={handleChange}
-            handleDateChange={handleDateChange}
-            handleSubmit={nextStep}
-            prevStep={prevStep}
-          />
-        )}
-        {step === 7 && <PaymentFormWrapper formData={formData} handleSubmitBooking={handleSubmitBooking} prevStep={prevStep} />}
-      </div>
-    </main>
+    <LoadGoogleMaps>
+      <main className="flex min-h-screen flex-col items-center justify-center p-24">
+        <div className="w-full max-w-md p-8 bg-white text-black rounded-lg shadow-md">
+          <h2 className="mb-6 text-2xl font-semibold text-center text-black">Get A Quote</h2>
+          {step === 1 && <DistanceCheck onValidAddress={handleValidAddress} />}
+          {step === 2 && <ServiceSelection handleServiceSelect={handleServiceSelect} />}
+          {step === 3 && formData.service === "Automotive" && (
+            <AutomotiveServiceDetails formData={formData} handleChange={handleChange} handleSubmit={nextStep} prevStep={prevStep} />
+          )}
+          {step === 3 && formData.service === "Residential" && (
+            <ResidentialServiceDetails formData={formData} handleChange={handleChange} handleSubmit={nextStep} prevStep={prevStep} />
+          )}
+          {step === 3 && formData.service === "Commercial" && (
+            <CommercialServiceDetails formData={formData} handleChange={handleChange} handleSubmit={nextStep} prevStep={prevStep} />
+          )}
+          {step === 4 && <CustomerInfo formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />}
+          {step === 5 && <ReviewAndSubmit formData={formData} prevStep={prevStep} handleSaveQuote={handleSaveQuote} handleBookService={handleBookService} handleTimeSlot={nextStep} />}
+          {step === 6 && (
+            <TimeSlotSelection
+              selectedSlot={formData.timeSlot}
+              selectedDate={formData.selectedDate}
+              handleSlotChange={handleChange}
+              handleDateChange={handleDateChange}
+              handleSubmit={nextStep}
+              prevStep={prevStep}
+            />
+          )}
+          {step === 7 && <PaymentFormWrapper formData={formData} handleSubmitBooking={handleSubmitBooking} prevStep={prevStep} />}
+        </div>
+      </main>
+    </LoadGoogleMaps>
   );
-}
+};
+
+export default Home;
