@@ -8,24 +8,14 @@ type CommercialServiceDetailsProps = {
 };
 
 const commercialServices = [
-  "Lockout service",
-  "Interior lockout",
-  "Lock change",
-  "Lock rekey",
-  "Master rekey",
-  "File cabinet lockout",
-  "Desk lockout",
-  "Key creation",
-  "Lock repair",
-  "Install electronic keypads",
-  "Fresh installation",
-  "Safe lockout",
-  "Mailbox lockout",
-  "Mailbox lock replacement",
-  "Push bar installation",
-  "Exit paddle installation",
-  "Key extraction",
-  "Lock installation"
+  "Commercial Lockout",
+  "Lock Change",
+  "Lock Rekeying",
+  "Lock Installation",
+  "Lock Repair",
+  "Safe Lockout",
+  "Mailbox Lock Change",
+  "File Cabinet"
 ];
 
 const CommercialServiceDetails: React.FC<CommercialServiceDetailsProps> = ({ formData, handleChange, handleSubmit, prevStep }) => {

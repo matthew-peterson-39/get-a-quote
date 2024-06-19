@@ -8,23 +8,14 @@ type ResidentialServiceDetailsProps = {
 };
 
 const residentialServices = [
-  "Lockout service",
-  "Interior lockout",
-  "Lock change",
-  "Lock rekey",
-  "Lock installation",
-  "File cabinet lockout",
-  "Desk lockout",
-  "Key creation",
-  "Lock repair",
-  "Install electronic keypads",
-  "Fresh installation",
-  "Safe lockout",
-  "Mailbox lockout",
-  "Mailbox lock replacement",
-  "Key extraction",
-  "Garage door lockout",
-  "Storage lockout"
+  "Residential Lockout",
+  "Lock Change",
+  "Lock Rekeying",
+  "Lock Installation",
+  "Lock Repair",
+  "Safe Lockout",
+  "Mailbox Lock Change",
+  "File Cabinet Lockout"
 ];
 
 const ResidentialServiceDetails: React.FC<ResidentialServiceDetailsProps> = ({ formData, handleChange, handleSubmit, prevStep }) => {

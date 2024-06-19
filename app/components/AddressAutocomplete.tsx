@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 
-const AddressAutocomplete: React.FC<{ onAddressSelect: (address: string) => void }> = ({ onAddressSelect }) => {
+const AddressAutocomplete: React.FC<{ onAddressSelect: (address: string, lat: number, lng: number) => void }> = ({ onAddressSelect }) => {
   const {
     ready,
     value,
@@ -47,14 +47,14 @@ const AddressAutocomplete: React.FC<{ onAddressSelect: (address: string) => void
       } = suggestion;
 
       return (
-        <li key={place_id} onClick={handleSelect(suggestion)} className="cursor-pointer">
+        <li key={place_id} onClick={handleSelect(suggestion)} className="cursor-pointer px-4 py-2 hover:bg-gray-200">
           <strong>{main_text}</strong> <small>{secondary_text}</small>
         </li>
       );
     });
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="relative">
       <input
         value={value}
         onChange={handleInput}
@@ -62,7 +62,11 @@ const AddressAutocomplete: React.FC<{ onAddressSelect: (address: string) => void
         placeholder="Enter your service address"
         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
       />
-      {status === "OK" && <ul>{renderSuggestions()}</ul>}
+      {status === "OK" && (
+        <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto">
+          {renderSuggestions()}
+        </ul>
+      )}
     </div>
   );
 };

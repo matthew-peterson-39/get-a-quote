@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { fetchAvailableTimeSlots, fetchAvailableDates, fetchUnavailableDates } from "../utils/mockApi";
+import { fetchAvailableTimeSlots, fetchAvailableDates, fetchUnavailableDates } from "../utils/workizApi";
 
 type TimeSlotSelectionProps = {
   selectedSlot: string;
@@ -14,24 +14,41 @@ type TimeSlotSelectionProps = {
 
 const TimeSlotSelection: React.FC<TimeSlotSelectionProps> = ({ selectedSlot, selectedDate, handleSlotChange, handleDateChange, handleSubmit, prevStep }) => {
   const [timeSlots, setTimeSlots] = useState<{ time: string, fee: number, available: boolean }[]>([]);
-  const [dates, setDates] = useState<string[]>([]);
-  const [unavailableDates, setUnavailableDates] = useState<string[]>([]);
+  const [dates, setDates] = useState<Date[]>([]);
+  const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
 
   useEffect(() => {
-    const availableDates = fetchAvailableDates();
-    setDates(availableDates);
+    const fetchDates = async () => {
+      try {
+        const availableDates = await fetchAvailableDates();
+        setDates(availableDates.map((date: string) => new Date(date)));
 
-    const unavailableDates = fetchUnavailableDates();
-    setUnavailableDates(unavailableDates);
+        const unavailableDates = await fetchUnavailableDates();
+        setUnavailableDates(unavailableDates.map((date: string) => new Date(date)));
+      } catch (error) {
+        console.error("Failed to fetch dates", error);
+      }
+    };
+
+    fetchDates();
   }, []);
 
   useEffect(() => {
-    if (selectedDate) {
-      const slots = fetchAvailableTimeSlots();
-      setTimeSlots(slots);
-    } else {
-      setTimeSlots([]);
-    }
+    const fetchSlots = async () => {
+      if (selectedDate) {
+        const dateString = selectedDate.toISOString().split('T')[0];
+        try {
+          const slots = await fetchAvailableTimeSlots(dateString);
+          setTimeSlots(slots);
+        } catch (error) {
+          console.error("Failed to fetch time slots", error);
+        }
+      } else {
+        setTimeSlots([]);
+      }
+    };
+
+    fetchSlots();
   }, [selectedDate]);
 
   return (
@@ -42,8 +59,8 @@ const TimeSlotSelection: React.FC<TimeSlotSelectionProps> = ({ selectedSlot, sel
         <DatePicker
           selected={selectedDate}
           onChange={handleDateChange}
-          includeDates={dates.map(date => new Date(date))}
-          excludeDates={unavailableDates.map(date => new Date(date))}
+          includeDates={dates}
+          excludeDates={unavailableDates}
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
         />
       </div>

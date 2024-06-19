@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ServiceSelection from './components/ServiceSelection';
 import CustomerInfo from './components/CustomerInfo';
 import AutomotiveServiceDetails from './components/AutomotiveServiceDetails';
@@ -11,20 +11,27 @@ import ReviewAndSubmit from './components/ReviewAndSubmit';
 import TimeSlotSelection from './components/TimeSlotSelection';
 import PaymentFormWrapper from './components/PaymentFormWrapper';
 import LoadGoogleMaps from './components/LoadGoogleMaps';
+import { fetchAvailableDates, fetchUnavailableDates } from './utils/workizApi';
 
 const Home: React.FC = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     service: "",
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     serviceDetails: "",
     selectedDate: null as Date | null,
     timeSlot: "",
     serviceAddress: "",
-    serviceFee: 0
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "US",
+    estimatedCost: 100 // Example estimate
   });
+  const [quoteSaved, setQuoteSaved] = useState(false);
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
@@ -37,8 +44,8 @@ const Home: React.FC = () => {
     setFormData({ ...formData, selectedDate: date });
   };
 
-  const handleValidAddress = (address: string, serviceFee: number) => {
-    setFormData({ ...formData, serviceAddress: address, serviceFee });
+  const handleValidAddress = (address: string, city: string, state: string, postalCode: string) => {
+    setFormData({ ...formData, serviceAddress: address, city, state, postalCode });
     nextStep();
   };
 
@@ -47,9 +54,41 @@ const Home: React.FC = () => {
     nextStep();
   };
 
-  const handleSaveQuote = () => {
-    alert("Quote saved!");
-    // Add logic to save the quote
+  const handleSaveQuote = async () => {
+    try {
+      const saveQuoteResponse = await fetch('/api/save-quote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ formData }),
+      });
+
+      const saveQuoteResult = await saveQuoteResponse.json();
+      if (!saveQuoteResponse.ok) {
+        alert(`Failed to save quote: ${saveQuoteResult.error}`);
+        return;
+      }
+
+      const generateLeadResponse = await fetch('/api/generate-lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ formData }),
+      });
+
+      const generateLeadResult = await generateLeadResponse.json();
+      if (!generateLeadResponse.ok) {
+        alert(`Failed to generate lead: ${generateLeadResult.error}`);
+        return;
+      }
+
+      setQuoteSaved(true);
+    } catch (error) {
+      console.error(error);
+      alert('An unexpected error occurred.');
+    }
   };
 
   const handleBookService = () => {
@@ -61,10 +100,31 @@ const Home: React.FC = () => {
     // Add logic to book the service
   };
 
+  const resetForm = () => {
+    setStep(1);
+    setFormData({
+      service: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      serviceDetails: "",
+      selectedDate: null,
+      timeSlot: "",
+      serviceAddress: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      country: "US",
+      estimatedCost: 100,
+    });
+    setQuoteSaved(false);
+  };
+
   return (
     <LoadGoogleMaps>
       <main className="flex min-h-screen flex-col items-center justify-center p-24">
-        <div className="w-full max-w-md p-8 bg-white text-black rounded-lg shadow-md">
+        <div className="w-full max-w-md p-8 bg-white text-black rounded-lg shadow-md form-container">
           <h2 className="mb-6 text-2xl font-semibold text-center text-black">Get A Quote</h2>
           {step === 1 && <DistanceCheck onValidAddress={handleValidAddress} />}
           {step === 2 && <ServiceSelection handleServiceSelect={handleServiceSelect} />}
@@ -78,7 +138,17 @@ const Home: React.FC = () => {
             <CommercialServiceDetails formData={formData} handleChange={handleChange} handleSubmit={nextStep} prevStep={prevStep} />
           )}
           {step === 4 && <CustomerInfo formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />}
-          {step === 5 && <ReviewAndSubmit formData={formData} prevStep={prevStep} handleSaveQuote={handleSaveQuote} handleBookService={handleBookService} handleTimeSlot={nextStep} />}
+          {step === 5 && (
+            <ReviewAndSubmit
+              formData={formData}
+              prevStep={prevStep}
+              handleSaveQuote={handleSaveQuote}
+              handleBookService={handleBookService}
+              handleTimeSlot={nextStep}
+              businessName="844 Ohio Key"
+              resetForm={resetForm}
+            />
+          )}
           {step === 6 && (
             <TimeSlotSelection
               selectedSlot={formData.timeSlot}
