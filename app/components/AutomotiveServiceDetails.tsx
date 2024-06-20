@@ -149,65 +149,67 @@ const AutomotiveServiceDetails: React.FC<AutomotiveServiceDetailsProps> = ({ for
               </li>
             ))}
           </ul>
-          <div className="mb-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">Make</label>
-            <select
-              name="make"
-              value={make}
-              onChange={(e) => {
-                setMake(e.target.value);
-                handleChange(e);
-              }}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
-            >
-              <option value="">Select Make</option>
-              {mockMakes.map((make) => (
-                <option key={make} value={make}>
-                  {make}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">Model</label>
-            <select
-              name="model"
-              value={model}
-              onChange={(e) => {
-                setModel(e.target.value);
-                handleChange(e);
-              }}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
-              disabled={!make}
-            >
-              <option value="">Select Model</option>
-              {make &&
-                  // @ts-ignore: Object literal may only specify known properties, and 'googleMapsApiKey' does not exist in type 'HookArgs'.
-                mockModels[make].map((model) => (
-                  <option key={model} value={model}>
-                    {model}
+          <div className="flex">
+            <div className="mb-4">
+              <label className="block mb-2 text-sm font-medium text-gray-700">Make</label>
+              <select
+                name="make"
+                value={make}
+                onChange={(e) => {
+                  setMake(e.target.value);
+                  handleChange(e);
+                }}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
+              >
+                <option value="">Select Make</option>
+                {mockMakes.map((make) => (
+                  <option key={make} value={make}>
+                    {make}
                   </option>
                 ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">Year</label>
-            <select
-              name="year"
-              value={year}
-              onChange={(e) => {
-                setYear(e.target.value);
-                handleChange(e);
-              }}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
-            >
-              <option value="">Select Year</option>
-              {mockYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
+              </select>
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2 text-sm font-medium text-gray-700">Model</label>
+              <select
+                name="model"
+                value={model}
+                onChange={(e) => {
+                  setModel(e.target.value);
+                  handleChange(e);
+                }}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
+                disabled={!make}
+              >
+                <option value="">Select Model</option>
+                {make &&
+                    // @ts-ignore: Object literal may only specify known properties, and 'googleMapsApiKey' does not exist in type 'HookArgs'.
+                  mockModels[make].map((model) => (
+                    <option key={model} value={model}>
+                      {model}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2 text-sm font-medium text-gray-700">Year</label>
+              <select
+                name="year"
+                value={year}
+                onChange={(e) => {
+                  setYear(e.target.value);
+                  handleChange(e);
+                }}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
+              >
+                <option value="">Select Year</option>
+                {mockYears.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className="flex justify-between">
             <button
