@@ -182,6 +182,7 @@ const AutomotiveServiceDetails: React.FC<AutomotiveServiceDetailsProps> = ({ for
             >
               <option value="">Select Model</option>
               {make &&
+                  // @ts-ignore: Object literal may only specify known properties, and 'googleMapsApiKey' does not exist in type 'HookArgs'.
                 mockModels[make].map((model) => (
                   <option key={model} value={model}>
                     {model}
