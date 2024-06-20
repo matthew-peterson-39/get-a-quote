@@ -132,7 +132,7 @@ const Home: React.FC = () => {
   return (
     <LoadGoogleMaps>
       <main>
-        <div className="w-full max-w-md p-8 bg-white text-black form-container">
+        <div className="w-full max-w-md min-h-[614px] p-8 bg-white text-black form-container">
           <h2 className="mb-6 text-2xl font-semibold text-center text-black">Get A Quote</h2>
           {step === 1 && <DistanceCheck onValidAddress={handleValidAddress} />}
           {step === 2 && <ServiceSelection handleServiceSelect={handleServiceSelect} />}
