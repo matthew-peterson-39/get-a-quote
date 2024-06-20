@@ -14,6 +14,7 @@ const AddressAutocomplete: React.FC<{ onAddressSelect: (address: string, lat: nu
       /* Define search scope here */
     },
     debounce: 300,
+    // @ts-ignore: Object literal may only specify known properties, and 'googleMapsApiKey' does not exist in type 'HookArgs'.
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY,
   });
 
