@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 
-const AddressAutocomplete: React.FC<{ onAddressSelect: (address: string, lat: number, lng: number) => void }> = ({ onAddressSelect }) => {
+interface AddressAutocompleteProps {
+  onAddressSelect: (address: string, lat: number, lng: number) => void;
+}
+
+const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSelect }) => {
   const {
     ready,
     value,
     suggestions: { status, data },
     setValue,
-    clearSuggestions,
+    clearSuggestions
   } = usePlacesAutocomplete({
     requestOptions: {
       /* Define search scope here */
@@ -36,7 +40,7 @@ const AddressAutocomplete: React.FC<{ onAddressSelect: (address: string, lat: nu
         onAddressSelect(description, lat, lng);
       })
       .catch((error) => {
-        console.log("😱 Error: ", error);
+        console.log("Error: ", error);
       });
   };
 
@@ -44,32 +48,32 @@ const AddressAutocomplete: React.FC<{ onAddressSelect: (address: string, lat: nu
     data.map((suggestion) => {
       const {
         place_id,
-        structured_formatting: { main_text, secondary_text },
+        structured_formatting: { main_text, secondary_text }
       } = suggestion;
 
       return (
-        <li key={place_id} onClick={handleSelect(suggestion)} className="cursor-pointer px-4 py-2 hover:bg-gray-200">
+        <li key={place_id} onClick={handleSelect(suggestion)}>
           <strong>{main_text}</strong> <small>{secondary_text}</small>
         </li>
       );
     });
 
-  return (
-    <div ref={ref} className="relative">
-      <input
-        value={value}
-        onChange={handleInput}
-        disabled={!ready}
-        placeholder="Enter your service address"
-        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
-      />
-      {status === "OK" && (
-        <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto">
-          {renderSuggestions()}
-        </ul>
-      )}
-    </div>
-  );
-};
-
-export default AddressAutocomplete;
+    return (
+      <div ref={ref} className="relative">
+        <input
+          value={value}
+          onChange={handleInput}
+          disabled={!ready}
+          placeholder="Enter your service address"
+          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
+        />
+        {status === "OK" && (
+          <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto">
+            {renderSuggestions()}
+          </ul>
+        )}
+      </div>
+    );
+  };
+  
+  export default AddressAutocomplete;

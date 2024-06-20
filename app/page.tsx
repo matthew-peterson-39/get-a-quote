@@ -52,8 +52,8 @@ const Home: React.FC = () => {
     setFormData({ ...formData, selectedDate: date });
   };
 
-  const handleValidAddress = (address: string, city: string, state: string, postalCode: string) => {
-    setFormData({ ...formData, serviceAddress: address, city, state, postalCode });
+  const handleValidAddress = (address: string, serviceFee: number) => {
+    setFormData({ ...formData, serviceAddress: address, estimatedCost: serviceFee });
     nextStep();
   };
 
@@ -130,7 +130,6 @@ const Home: React.FC = () => {
   };
 
   return (
-    
     <LoadGoogleMaps>
       <main className="flex min-h-screen flex-col items-center justify-center p-24">
         <div className="w-full max-w-md p-8 bg-white text-black rounded-lg shadow-md form-container">

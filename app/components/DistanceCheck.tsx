@@ -22,7 +22,6 @@ const DistanceCheck: React.FC<{ onValidAddress: (address: string, serviceFee: nu
       },
       (response, status) => {
         if (status === google.maps.DistanceMatrixStatus.OK) {
-
           // @ts-ignore: Object literal may only specify known properties, and 'googleMapsApiKey' does not exist in type 'HookArgs'.
           const durationInMinutes = response.rows[0].elements[0].duration.value / 60;
 
@@ -48,7 +47,7 @@ const DistanceCheck: React.FC<{ onValidAddress: (address: string, serviceFee: nu
     <div>
       <div className="mb-4">
         <label className="block mb-2 text-sm font-medium text-gray-700">Enter your service address</label>
-        <AddressAutocomplete onAddressSelect={handleAddressSelect} />
+          <AddressAutocomplete onAddressSelect={handleAddressSelect} />
       </div>
       {error && <p className="text-red-500">{error}</p>}
     </div>
