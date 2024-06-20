@@ -34,7 +34,16 @@ const Home: React.FC = () => {
   const [quoteSaved, setQuoteSaved] = useState(false);
 
   const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
+  const prevStep = () => {
+    // Adjusting the step based on current step and form data
+    if (step === 5 && formData.service !== "") {
+      setStep(4);
+    } else if (step === 4 && formData.service !== "") {
+      setStep(3);
+    } else {
+      setStep(step - 1);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -122,6 +131,7 @@ const Home: React.FC = () => {
   };
 
   return (
+    
     <LoadGoogleMaps>
       <main className="flex min-h-screen flex-col items-center justify-center p-24">
         <div className="w-full max-w-md p-8 bg-white text-black rounded-lg shadow-md form-container">

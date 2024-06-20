@@ -65,7 +65,7 @@ const ResidentialServiceDetails: React.FC<ResidentialServiceDetailsProps> = ({ f
           type="submit"
           className="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200"
         >
-          Submit
+          Next
         </button>
       </div>
     </form>
