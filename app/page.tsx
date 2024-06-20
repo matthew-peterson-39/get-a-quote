@@ -9,7 +9,6 @@ import CommercialServiceDetails from './components/CommercialServiceDetails';
 import DistanceCheck from './components/DistanceCheck';
 import ReviewAndSubmit from './components/ReviewAndSubmit';
 import TimeSlotSelection from './components/TimeSlotSelection';
-import PaymentFormWrapper from './components/PaymentFormWrapper';
 import LoadGoogleMaps from './components/LoadGoogleMaps';
 import { fetchAvailableDates, fetchUnavailableDates } from './utils/workizApi';
 
@@ -169,7 +168,6 @@ const Home: React.FC = () => {
               prevStep={prevStep}
             />
           )}
-          {step === 7 && <PaymentFormWrapper formData={formData} handleSubmitBooking={handleSubmitBooking} prevStep={prevStep} />}
         </div>
       </main>
     </LoadGoogleMaps>

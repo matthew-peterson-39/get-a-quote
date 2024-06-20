@@ -22,6 +22,8 @@ const DistanceCheck: React.FC<{ onValidAddress: (address: string, serviceFee: nu
       },
       (response, status) => {
         if (status === google.maps.DistanceMatrixStatus.OK) {
+
+          // @ts-ignore: Object literal may only specify known properties, and 'googleMapsApiKey' does not exist in type 'HookArgs'.
           const durationInMinutes = response.rows[0].elements[0].duration.value / 60;
 
           let serviceFee;
