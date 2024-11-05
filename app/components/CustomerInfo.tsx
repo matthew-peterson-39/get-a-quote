@@ -1,18 +1,39 @@
 import React, { useState } from 'react';
 
 type CustomerInfoProps = {
-  formData: any;
+  formData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    serviceAddress: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+    isAddressValid: boolean;
+  };
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleAddressValidation: (address: string, serviceFee: number, isValid: boolean) => void;
   nextStep: () => void;
   prevStep: () => void;
+  validateStep: () => boolean;
 };
 
-const CustomerInfo: React.FC<CustomerInfoProps> = ({ formData, handleChange, nextStep, prevStep }) => {
+const CustomerInfo: React.FC<CustomerInfoProps> = ({
+  formData,
+  handleChange,
+  handleAddressValidation,
+  nextStep,
+  prevStep,
+  validateStep
+}) => {
   const [errors, setErrors] = useState({
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
+    serviceAddress: '',
   });
 
   const validatePhoneNumber = (phone: string) => {
@@ -20,9 +41,15 @@ const CustomerInfo: React.FC<CustomerInfoProps> = ({ formData, handleChange, nex
     return phoneRegex.test(phone);
   };
 
-  const handleNextStep = () => {
+  const handleSubmit = () => {
     let valid = true;
-    const newErrors = { firstName: '', lastName: '', email: '', phone: '' };
+    const newErrors = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      serviceAddress: '',
+    };
 
     if (!formData.firstName) {
       newErrors.firstName = 'First name is required';
@@ -43,16 +70,21 @@ const CustomerInfo: React.FC<CustomerInfoProps> = ({ formData, handleChange, nex
       newErrors.phone = 'Invalid phone number';
       valid = false;
     }
+    if (!formData.serviceAddress) {
+      newErrors.serviceAddress = 'Service address is required';
+      valid = false;
+    }
 
     setErrors(newErrors);
 
     if (valid) {
-      nextStep();
+      // Validate the address before moving to the next step
+      handleAddressValidation(formData.serviceAddress, 100, true); // Example service fee of $100
     }
   };
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); handleNextStep(); }}>
+    <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
       <div className="mb-4">
         <label className="block mb-2 text-sm font-medium text-gray-700">First Name</label>
         <input
@@ -101,6 +133,18 @@ const CustomerInfo: React.FC<CustomerInfoProps> = ({ formData, handleChange, nex
         />
         {errors.phone && <p className="text-red-600 text-sm mt-1">{errors.phone}</p>}
       </div>
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-medium text-gray-700">Service Address</label>
+        <input
+          type="text"
+          name="serviceAddress"
+          value={formData.serviceAddress}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
+          placeholder="Your Service Address"
+        />
+        {errors.serviceAddress && <p className="text-red-600 text-sm mt-1">{errors.serviceAddress}</p>}
+      </div>
       <div className="flex justify-between">
         <button
           type="button"
@@ -111,7 +155,8 @@ const CustomerInfo: React.FC<CustomerInfoProps> = ({ formData, handleChange, nex
         </button>
         <button
           type="submit"
-          className="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200"
+          className={`px-4 py-2 text-white rounded-lg focus:outline-none focus:ring ${formData.isAddressValid ? 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-200' : 'bg-gray-400 cursor-not-allowed'}`}
+          disabled={!formData.isAddressValid}
         >
           Next
         </button>

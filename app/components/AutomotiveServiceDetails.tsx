@@ -49,81 +49,6 @@ const AutomotiveServiceDetails: React.FC<AutomotiveServiceDetailsProps> = ({ for
       {step === 1 && (
         <div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">Is your vehicle running?</label>
-            <div className="flex space-x-4">
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="vehicleRunning"
-                  value="Yes"
-                  checked={formData.vehicleRunning === "Yes"}
-                  onChange={handleChange}
-                  className="form-radio"
-                />
-                <span className="ml-2">Yes</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="vehicleRunning"
-                  value="No"
-                  checked={formData.vehicleRunning === "No"}
-                  onChange={handleChange}
-                  className="form-radio"
-                />
-                <span className="ml-2">No</span>
-              </label>
-            </div>
-          </div>
-          <div className="mb-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">Are your keys locked inside the trunk?</label>
-            <div className="flex space-x-4">
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="keysInTrunk"
-                  value="Yes"
-                  checked={formData.keysInTrunk === "Yes"}
-                  onChange={handleChange}
-                  className="form-radio"
-                />
-                <span className="ml-2">Yes</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="keysInTrunk"
-                  value="No"
-                  checked={formData.keysInTrunk === "No"}
-                  onChange={handleChange}
-                  className="form-radio"
-                />
-                <span className="ml-2">No</span>
-              </label>
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <button
-              type="button"
-              onClick={prevStep}
-              className="px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-200"
-            >
-              Back
-            </button>
-            <button
-              type="button"
-              onClick={handleNext}
-              className="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200"
-              disabled={!formData.vehicleRunning || !formData.keysInTrunk}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      )}
-      {step === 2 && (
-        <div>
-          <div className="mb-4">
             <label className="block mb-2 text-sm font-medium text-gray-700">Search for a service</label>
             <input
               type="text"
@@ -223,6 +148,82 @@ const AutomotiveServiceDetails: React.FC<AutomotiveServiceDetailsProps> = ({ for
               type="submit"
               className="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200"
               disabled={!make || !model || !year}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )
+      }
+      {step === 2 && (
+        <div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-700">Is your vehicle running?</label>
+            <div className="flex space-x-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="vehicleRunning"
+                  value="Yes"
+                  checked={formData.vehicleRunning === "Yes"}
+                  onChange={handleChange}
+                  className="form-radio"
+                />
+                <span className="ml-2">Yes</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="vehicleRunning"
+                  value="No"
+                  checked={formData.vehicleRunning === "No"}
+                  onChange={handleChange}
+                  className="form-radio"
+                />
+                <span className="ml-2">No</span>
+              </label>
+            </div>
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-700">Are your keys locked inside the trunk?</label>
+            <div className="flex space-x-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="keysInTrunk"
+                  value="Yes"
+                  checked={formData.keysInTrunk === "Yes"}
+                  onChange={handleChange}
+                  className="form-radio"
+                />
+                <span className="ml-2">Yes</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="keysInTrunk"
+                  value="No"
+                  checked={formData.keysInTrunk === "No"}
+                  onChange={handleChange}
+                  className="form-radio"
+                />
+                <span className="ml-2">No</span>
+              </label>
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <button
+              type="button"
+              onClick={prevStep}
+              className="px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-200"
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              className="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200"
+              disabled={!formData.vehicleRunning || !formData.keysInTrunk}
             >
               Next
             </button>
