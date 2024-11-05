@@ -64,7 +64,7 @@ const Home: React.FC = () => {
 
   const handleSaveQuote = async () => {
     try {
-      const saveQuoteResponse = await fetch('/api/save-quote', {
+      const saveQuoteResponse = await fetch('/api/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ const Home: React.FC = () => {
         return;
       }
 
-      const generateLeadResponse = await fetch('/api/generate-lead', {
+      const generateLeadResponse = await fetch('/api/workiz/lead', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,18 +134,42 @@ const Home: React.FC = () => {
       <main>
         <div className="w-full max-w-md min-h-[614px] p-8 bg-white text-black form-container">
           <h2 className="mb-6 text-2xl font-semibold text-center text-black">Get A Quote</h2>
-          {step === 1 && <DistanceCheck onValidAddress={handleValidAddress} />}
-          {step === 2 && <ServiceSelection handleServiceSelect={handleServiceSelect} />}
+          {step === 1 && (
+            <DistanceCheck 
+              onValidAddress={handleValidAddress} />
+          )}
+          {step === 2 && (
+            <ServiceSelection 
+              handleServiceSelect={handleServiceSelect} />
+          )}
           {step === 3 && formData.service === "Automotive" && (
-            <AutomotiveServiceDetails formData={formData} handleChange={handleChange} handleSubmit={nextStep} prevStep={prevStep} />
+            <AutomotiveServiceDetails 
+              formData={formData} 
+              handleChange={handleChange} 
+              handleSubmit={nextStep} 
+              prevStep={prevStep} />
           )}
           {step === 3 && formData.service === "Residential" && (
-            <ResidentialServiceDetails formData={formData} handleChange={handleChange} handleSubmit={nextStep} prevStep={prevStep} />
+            <ResidentialServiceDetails 
+              formData={formData} 
+              handleChange={handleChange}
+              handleSubmit={nextStep}
+              prevStep={prevStep} />
           )}
           {step === 3 && formData.service === "Commercial" && (
-            <CommercialServiceDetails formData={formData} handleChange={handleChange} handleSubmit={nextStep} prevStep={prevStep} />
+            <CommercialServiceDetails 
+              formData={formData} 
+              handleChange={handleChange} 
+              handleSubmit={nextStep} 
+              prevStep={prevStep} />
           )}
-          {step === 4 && <CustomerInfo formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />}
+          {step === 4 && (
+            <CustomerInfo 
+              formData={formData} 
+              handleChange={handleChange} 
+              nextStep={nextStep} 
+              prevStep={prevStep} />
+          )}
           {step === 5 && (
             <ReviewAndSubmit
               formData={formData}
