@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AddressAutocomplete from './AddressAutocomplete';
 
 type CustomerInfoProps = {
   formData: {
@@ -37,8 +38,23 @@ const CustomerInfo: React.FC<CustomerInfoProps> = ({
   });
 
   const validatePhoneNumber = (phone: string) => {
-    const phoneRegex = /^\d{10}$/; // Simple regex for 10 digit phone numbers
+    const phoneRegex = /^\d{10}$/;
     return phoneRegex.test(phone);
+  };
+
+  const handleAddressSelect = (address: string, lat: number, lng: number) => {
+    // Create a synthetic event to maintain compatibility with handleChange
+    const syntheticEvent = {
+      target: {
+        name: 'serviceAddress',
+        value: address
+      }
+    } as React.ChangeEvent<HTMLInputElement>;
+    
+    handleChange(syntheticEvent);
+    
+    // Validate the address and pass through the coordinates if needed
+    handleAddressValidation(address, 100, true);
   };
 
   const handleSubmit = () => {
@@ -77,9 +93,8 @@ const CustomerInfo: React.FC<CustomerInfoProps> = ({
 
     setErrors(newErrors);
 
-    if (valid) {
-      // Validate the address before moving to the next step
-      handleAddressValidation(formData.serviceAddress, 100, true); // Example service fee of $100
+    if (valid && formData.isAddressValid) {
+      nextStep();
     }
   };
 
@@ -135,13 +150,8 @@ const CustomerInfo: React.FC<CustomerInfoProps> = ({
       </div>
       <div className="mb-4">
         <label className="block mb-2 text-sm font-medium text-gray-700">Service Address</label>
-        <input
-          type="text"
-          name="serviceAddress"
-          value={formData.serviceAddress}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
-          placeholder="Your Service Address"
+        <AddressAutocomplete 
+          onAddressSelect={handleAddressSelect}
         />
         {errors.serviceAddress && <p className="text-red-600 text-sm mt-1">{errors.serviceAddress}</p>}
       </div>

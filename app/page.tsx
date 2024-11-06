@@ -9,7 +9,6 @@ import CommercialServiceDetails from './components/CommercialServiceDetails';
 import ReviewAndSubmit from './components/ReviewAndSubmit';
 import TimeSlotSelection from './components/TimeSlotSelection';
 import LoadGoogleMaps from './components/LoadGoogleMaps';
-import { fetchAvailableDates, fetchUnavailableDates } from './utils/workizApi';
 
 const Home: React.FC = () => {
   const [step, setStep] = useState(1);
